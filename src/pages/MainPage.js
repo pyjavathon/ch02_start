@@ -1,11 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 
 function MainPage(props){
     return (
-        <div className={'text-3xl'}>
-            <div>Main Page</div>
-        </div>
+        <BasicLayout>
+            <div className={'text-3xl'}>MainPage</div>
+        </BasicLayout>
     );
 }
 
