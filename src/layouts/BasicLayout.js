@@ -4,7 +4,7 @@ const BasicLayout = ({children}) => {
   return ( 
   <>
 
-    {/* 기존 헤더 대신 BasicMenu*/ }
+     {/* 기존 헤더 대신 BasicMenu */}
     <BasicMenu/> 
 
     {/* 상단 여백 my-5 제거 */}
