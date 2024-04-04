@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { deleteOne, getOne, putOne } from "../../api/TodoApi";
+import { deleteOne, getOne, putOne } from "../../api/todoApi";
 import useCustomMove from "../../hooks/useCustomMove";
 import ResultModal from "../common/ResultModal";
 

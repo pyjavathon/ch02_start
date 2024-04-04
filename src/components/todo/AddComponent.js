@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ResultModal from "../common/ResultModal";
 import useCustomMove from "../../hooks/useCustomMove";
-import {postAdd} from "../../api/TodoApi";
+import {postAdd} from "../../api/todoApi";
 
 const initState = {
     title:'',

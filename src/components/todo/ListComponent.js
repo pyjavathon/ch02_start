@@ -1,6 +1,6 @@
 import React, { useState,useEffect } from "react";
 import useCustomMove from "../../hooks/useCustomMove";
-import { getList } from "../../api/TodoApi";
+import { getList } from "../../api/todoApi";
 import PageComponent from "../common/PageComponent";
 
 const initState = {
