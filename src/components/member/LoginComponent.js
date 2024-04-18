@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { login, loginPostAsync } from "../../slices/loginSlice";
 import { useNavigate } from "react-router-dom";
 import useCustomLogin from "../../hooks/useCustomLogin";
+import KakaoLoginComponent from "./KakaoLoginComponent";
 
 const initState = {
     email:'',
@@ -28,6 +29,7 @@ function LoginComponent(props){
           if(data.error){
             alert("이메일과 패스워드를 확인해 주세요.")
           }else{
+            alert("로그인 성공")
             moveToPath("/")
           }
         })
@@ -84,6 +86,7 @@ function LoginComponent(props){
               </div>
             </div>
           </div>
+          <KakaoLoginComponent/>
         </div>
       );
     };

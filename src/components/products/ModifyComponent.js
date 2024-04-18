@@ -4,6 +4,7 @@ import { API_SERVER_HOST } from "../../api/todoApi";
 import useCustomMove from "../../hooks/useCustomMove";
 import FetchingModal from "../common/FetchingModal";
 import ResultModal from "../common/ResultModal";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 
 const initState = {
@@ -26,18 +27,26 @@ function ModifyComponent({pno}){
 
    const [result, setResult] = useState(false)
 
+   const delMutation = useMutation({mutationFn: (pno) => deleteOne(pno)})
+
+   const modMutation = useMutation({mutationFn:(product)=> putOne(pno,product)})
+
    const {moveToList, moveToRead} = useCustomMove();
+
+   const query = useQuery({
+    queryKey: ['products',pno],
+    queryFn: () => getOne(pno),
+    staleTime: Infinity
+   })
 
    const uploadRef = useRef()
 
     useEffect(()=>{
-        setFetching(true)
-
-        getOne(pno).then(data=>{
-            setProduct(data)
-            setFetching(false)
-        })
-    },[pno]);
+        
+      if(query.isSuccess){
+        setProduct(query.isSuccess)
+      }
+    },[pno, query.data, query.isSuccess]);
 
     const handleChangeProduct = (e) => {
         product[e.target.name] = e.target.value
@@ -74,11 +83,7 @@ function ModifyComponent({pno}){
         }
         setFetching(true)
 
-        putOne(pno,formData).then(data=>{
-
-            setResult('Modified')
-            setFetching(false)
-        })
+        modMutation.mutate(formData)
 
 
 
@@ -86,40 +91,44 @@ function ModifyComponent({pno}){
 
     const handleClickDelete = () => {
 
-        setFetching(true)
-        deleteOne(pno).then(data => {
-    
-          setResult("Deleted")
-          setFetching(false)
-    
-        })
+      delMutation.mutate(pno)
+        
     
       }
+    const queryClient = useQueryClient()
+
     const closeModal = () => {
-        if(result === 'Modified'){
-            moveToRead(pno)
-        }else if(result === 'Deleted'){
-            moveToList({page:1})
-        }
-        setResult(null)
+
+      queryClient.invalidateQueries(['products',pno])
+      queryClient.invalidateQueries("products/list")
+
+      if(delMutation.isSuccess){
+       
+       moveToList()
     }
 
+    if(modMutation.isSuccess){
+      
+      moveToRead(pno)
+   }
+  }
     return (
 
         <div className="border-2 border-sky-200 mt-10 m-2 p-4">
-        Product Modify Component
-        {fetching ? <FetchingModal /> : <></>}
-      
-        {result? 
-            <ResultModal
-            title={`${result}`}
-            content={'정상적으로 처리되었습니다.'}  //결과 모달창 
-            callbackFn={closeModal}
-            />    
-          :
-          <></>}
-      
-      
+        
+        {query.isFetching || delMutation.isPending || modMutation.isPending ? <FetchingModal/>:<></>}
+
+        {delMutation.isSuccess || modMutation.isSuccess?
+          <ResultModal
+          title={'처리 결과'}
+          content={'정상적으로 처리되었습니다.'}
+          callbackFn={closeModal}
+         />
+         :<></> 
+
+        }
+
+
         <div className="flex justify-center">
           <div className="relative mb-4 flex w-full flex-wrap items-stretch">
             <div className="w-1/5 p-6 text-right font-bold">Product Name</div>

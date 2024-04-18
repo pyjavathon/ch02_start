@@ -21,8 +21,12 @@ const loginSlice = createSlice({
     reducers: {
         login: (state,action) => {
             console.log("login....", action)
+            
+            setCookie("member",JSON.stringify(action.payload),1)
 
-            return {email: action.payload.email}
+            return action.payload
+
+            
         },
         logout:()=>{
             console.log("logout....")
@@ -35,7 +39,7 @@ const loginSlice = createSlice({
             console.log("fulfilled")
 
             const payload = action.payload
-
+            console.log(payload)
             if(!payload.error){
                 setCookie("member",JSON.stringify(payload),1)
             }

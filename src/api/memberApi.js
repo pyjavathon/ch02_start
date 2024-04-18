@@ -13,3 +13,10 @@ export const loginPost = async(loginParam) => {
     const res = await axios.post(`${host}/login`, form, header)
     return res.data
 }
+
+export const modifyMember = async (member) => {
+
+    const res = await axios.put(`${host}/modify`, member)
+
+    return res.data
+}

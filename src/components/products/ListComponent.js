@@ -4,6 +4,7 @@ import { getList } from "../../api/productsApi";
 import FetchingModal from "../common/FetchingModal";
 import { API_SERVER_HOST } from "../../api/todoApi";
 import PageComponent from "../common/PageComponent";
+import { useQuery } from "@tanstack/react-query";
 
 const initState = {
     dtoList:[],
@@ -24,24 +25,22 @@ function ListComponent(props){
 
     const {moveToList, moveToRead, page, size, refresh} = useCustomMove()
 
-    const [serverData, setServerData] = useState(initState)
 
-    const [fetching, setFetching] = useState(false)
+    const {data, isFetching, error, isError} = useQuery({
+        queryKey:['products/list', {page,size,refresh}],
+        queryFn: () => getList({page,size}),
+        staleTime: 1000*60
+    })
 
-    useEffect(()=>{
+    const handleClickPage = (pageParam) => {
+        moveToList(pageParam)
+    }
 
-        setFetching(true)
-
-        getList({page,size}).then(data =>{
-
-            setFetching(false)
-            setServerData(data)
-        })
-    },[page,size,refresh]);
+    const serverData = data || initState
 
     return (
         <div className="border-2 border-blue-100 mt-10 mr-2 ml-2">
-            {fetching ? <FetchingModal/>:<></>}
+            {isFetching ? <FetchingModal/>:<></>}
 
             <div className="flex flex-wrap mx-auto p-6">
 
@@ -79,7 +78,7 @@ function ListComponent(props){
 
             </div>
              
-        <PageComponent serverData={serverData} movePage={moveToList}></PageComponent>
+        <PageComponent serverData={serverData} movePage={handleClickPage}></PageComponent>
         </div>
     );
 }
