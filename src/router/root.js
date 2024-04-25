@@ -2,6 +2,7 @@ import { Suspense, lazy } from "react";
 import todoRouter from "./todoRouter";
 import productsRouter from "./productsRouter";
 import memberRouter from "./memberRouter";
+import paymentRouter from "./paymentRouter";
 
 const { createBrowserRouter } = require("react-router-dom");
 
@@ -13,6 +14,8 @@ const About = lazy(() => import("../pages/AboutPage"))
 const TodoIndex = lazy(() => import("../pages/todo/IndexPage"))
 
 const ProductsIndex = lazy(() => import("../pages/products/IndexPage"))
+
+const Payment = lazy(() => import("../pages/payment/PaymentPage"))
 
 const root = createBrowserRouter([
     {
@@ -36,6 +39,11 @@ const root = createBrowserRouter([
     {
         path: "member",
         children: memberRouter()
+    },
+    {
+        path: "payment",
+        element: <Suspense fallback={Loading}><Payment/></Suspense>,
+        children: paymentRouter()
     }
 
 ])

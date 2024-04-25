@@ -44,7 +44,7 @@ function ModifyComponent({pno}){
     useEffect(()=>{
         
       if(query.isSuccess){
-        setProduct(query.isSuccess)
+        setProduct(query.data)
       }
     },[pno, query.data, query.isSuccess]);
 

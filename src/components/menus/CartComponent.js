@@ -30,11 +30,11 @@ function CartComponent(){
                     </div>
                     <div>
                             <ul>
-                                {cartItems.map(item => <li><CartItemComponent {...item} 
+                                {cartItems.map(item => <CartItemComponent {...item} 
                                                                                key={item.cino}
                                                                                changeCart={changeCart}
                                                                                email = {loginState.email} 
-                                                                               /></li>)}
+                                                                               />)}
                             </ul>
                     </div>
                 </div>

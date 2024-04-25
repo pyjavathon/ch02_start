@@ -37,9 +37,10 @@ function AddComponent (props) {
         console.log(product)
 
         const formData = new FormData()
+        
 
         const files = uploadRef.current.files
-
+        console.log(files)
         for(let i = 0;i<files.length;i++){
             formData.append("files", files[i])
         }
